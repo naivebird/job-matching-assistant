@@ -1,5 +1,4 @@
 import json
-import math
 from functools import cache
 
 import tqdm
@@ -32,35 +31,14 @@ def get_mappings():
                     "type": "dense_vector",
                     "dims": 384
                 },
-                "location": {
-                    "properties": {
-                        "where": {"type": "text"},
-                        "suburb": {"type": "keyword"},
-                        "state": {"type": "keyword"},
-                        "postcode": {"type": "keyword"},
-                        "country_iso_numeric_code": {"type": "integer"},
-                        "country": {"type": "keyword"},
-                        "country_code": {"type": "keyword"}
-                    }
-                },
                 "types": {"type": "keyword"},
                 "arrangement": {"type": "keyword"},
-                "salary": {
-                    "properties": {
-                        "min": {"type": "float"},
-                        "max": {"type": "float"},
-                        "type": {"type": "keyword"},
-                        "currency": {"type": "keyword"},
-                        "description": {"type": "text"}
-                    }
-                },
                 "url": {"type": "keyword"},
                 "listing_date": {"type": "date"},
                 "company": {
                     "properties": {
                         "id": {"type": "keyword"},
-                        "name": {"type": "text"},
-                        "logo_url": {"type": "keyword"}
+                        "name": {"type": "text"}
                     }
                 }
             }
@@ -83,9 +61,6 @@ def load_documents(file_path):
 def ingest_data(index_name):
     documents = load_documents("data/seek_jobs.json")
     for doc in tqdm.tqdm(documents):
-        max_salary = doc["salary"]["max"]
-        if math.isnan(max_salary):
-            max_salary = None
         get_es_client().index(
             index=index_name,
             document={
@@ -93,30 +68,13 @@ def ingest_data(index_name):
                 "title": doc["title"],
                 "description": doc["clean_description"],
                 "description_vector": load_embedding_model().encode(doc["clean_description"]).tolist(),
-                "location": {
-                    "where": doc["location"]["where"],
-                    "suburb": doc["location"]["suburb"],
-                    "state": doc["location"]["state"],
-                    "postcode": doc["location"]["postcode"],
-                    "country_iso_numeric_code": doc["location"]["countryIsoNumericCode"],
-                    "country": doc["location"]["country"],
-                    "country_code": doc["location"]["countryCode"]
-                },
                 "types": doc["types"],
                 "arrangement": doc["arrangement"],
-                "salary": {
-                    "min": doc["salary"]["min"],
-                    "max": max_salary,
-                    "type": doc["salary"]["type"],
-                    "currency": doc["salary"]["currency"],
-                    "description": doc["salary"]["description"]
-                },
                 "url": doc["url"],
                 "listing_date": doc["listingDate"],
                 "company": {
                     "id": doc["company"]["id"],
-                    "name": doc["company"]["name"],
-                    "logo_url": doc["company"]["logoUrl"]
+                    "name": doc["company"]["name"]
                 }
             }
         )
