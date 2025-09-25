@@ -1,3 +1,4 @@
+import gzip
 import json
 from functools import cache
 
@@ -54,12 +55,12 @@ def create_index(index_name, mappings):
 
 
 def load_documents(file_path):
-    with open(file_path, "r") as f:
+    with gzip.open(file_path, "rt", encoding="utf-8") as f:
         return json.load(f)
 
 
-def ingest_data(index_name):
-    documents = load_documents("data/seek-jobs.json")
+def ingest_data(index_name, file_path):
+    documents = load_documents(file_path)
     for doc in tqdm.tqdm(documents):
         get_es_client().index(
             index=index_name,
@@ -83,4 +84,5 @@ def ingest_data(index_name):
 if __name__ == '__main__':
     index_name = "seek-jobs"
     create_index(index_name, get_mappings())
-    ingest_data(index_name)
+    ingest_data(index_name=index_name,
+                file_path="data/seek-jobs.json.gz")

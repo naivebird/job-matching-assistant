@@ -1,4 +1,5 @@
 import pandas as pd
+import tqdm
 
 from rag.rag import rag, load_embedding_model
 from ingestion.ingestion import get_es_client
@@ -17,7 +18,7 @@ def compute_similarity(record, response_col):
 def evaluate_rag(ground_truth_file):
     df = pd.read_csv(ground_truth_file)
     similarity_columns = []
-    for llm_model in ['gpt-4o', 'gpt-4.1', 'gpt-5']:
+    for llm_model in tqdm.tqdm(['gpt-4o', 'gpt-4.1', 'gpt-5']):
         df[f"{llm_model}_response"] = df.apply(lambda row: rag(resume=row["generated_resume"],
                                                                es_client=get_es_client(),
                                                                return_job_desc_only=True), axis=1)
