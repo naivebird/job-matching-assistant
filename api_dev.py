@@ -7,4 +7,4 @@ with open(file_path, "rb") as f:
     files = {"file": (file_path, f, "application/pdf")}
     response = requests.post(url, files=files).json()
 
-print("Response:", response["result"])
+print(response["result"])

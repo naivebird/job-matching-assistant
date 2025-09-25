@@ -37,6 +37,6 @@ def generate_ground_truth_data(file_path, num_samples):
 
 if __name__ == '__main__':
     generate_ground_truth_data(
-        file_path="data/ground-truth-data.csv",
+        file_path="data/seek-jobs.json.gz",
         num_samples=100
     )
