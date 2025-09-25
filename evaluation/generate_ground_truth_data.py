@@ -28,7 +28,7 @@ def generate_ground_truth_data(file_path, num_samples):
     results = []
     documents = load_documents(file_path)
     for doc in tqdm.tqdm(documents[:num_samples]):
-        job_description = doc["clean_description"]
+        job_description = doc["description"]
         resume = generate_resume(job_description)
         results.append([doc["id"], resume, job_description])
     df = pd.DataFrame(results, columns=["job_id", "generated_resume", "job_description"])

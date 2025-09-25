@@ -66,7 +66,7 @@ def build_prompt(resume_text, jobs, return_job_desc_only=False):
     prompt += "Here are some job descriptions that match the resume:\n"
     for i, job in enumerate(jobs):
         source = job['_source']
-        prompt += f"{i + 1}. {source['title']} at {source['company']['name']} in {source['location']['where']}\n"
+        prompt += f"{i + 1}. {source['title']} at {source['company']['name']}\n"
         prompt += f"   Job Description: {source['description']}\n"
         prompt += f"   URL: {source['url']}\n\n"
     if return_job_desc_only:

@@ -32,8 +32,6 @@ def get_mappings():
                     "type": "dense_vector",
                     "dims": 384
                 },
-                "types": {"type": "keyword"},
-                "arrangement": {"type": "keyword"},
                 "url": {"type": "keyword"},
                 "listing_date": {"type": "date"},
                 "company": {
@@ -62,15 +60,15 @@ def load_documents(file_path):
 def ingest_data(index_name, file_path):
     documents = load_documents(file_path)
     for doc in tqdm.tqdm(documents):
+        if not doc["description"]:
+            continue
         get_es_client().index(
             index=index_name,
             document={
                 "id": doc["id"],
                 "title": doc["title"],
-                "description": doc["clean_description"],
-                "description_vector": load_embedding_model().encode(doc["clean_description"]).tolist(),
-                "types": doc["types"],
-                "arrangement": doc["arrangement"],
+                "description": doc["description"],
+                "description_vector": load_embedding_model().encode(doc["description"]).tolist(),
                 "url": doc["url"],
                 "listing_date": doc["listingDate"],
                 "company": {
