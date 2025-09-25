@@ -59,7 +59,7 @@ def load_documents(file_path):
 
 
 def ingest_data(index_name):
-    documents = load_documents("data/seek_jobs.json")
+    documents = load_documents("data/seek-jobs.json")
     for doc in tqdm.tqdm(documents):
         get_es_client().index(
             index=index_name,

@@ -35,6 +35,6 @@ def generate_ground_truth_data(documents, num_samples):
     df.to_csv("data/ground-truth-data.csv", index=False)
 
 if __name__ == '__main__':
-    with open("data/seek_jobs.json", "r") as f:
+    with open("data/seek-jobs.json", "r") as f:
         documents = json.load(f)
     generate_ground_truth_data(documents, num_samples=100)
