@@ -57,4 +57,8 @@ Observation: gpt-5 performs the best as it has the highest mean similarity when 
 ```
 python api_dev.py
 ```
+Sample result:
+
+<img width="1323" height="487" alt="image" src="https://github.com/user-attachments/assets/4ff26370-d517-4b3a-b843-a757b7855775" />
+
 You can replace the existing resume with yours to find your own best-matched job.
