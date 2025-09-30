@@ -27,6 +27,12 @@ Run this command to start Elasticsearch, Kibana, and the Job Matching App:
 docker compose up --build
 ```
 
+### Add the project directory to Python path
+Make sure you are in the project directory before running this command:
+```
+export PYTHONPATH="$(pwd)${PYTHONPATH:+:$PYTHONPATH}"
+```
+
 ### Ingestion
 ```
 python ingestion/ingestion.py
